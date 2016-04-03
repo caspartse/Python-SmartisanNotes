@@ -2,7 +2,7 @@
 
 Python API Wrapper for http://note.t.tt Service.
 
-利用 [Requests](python-requests.org) 库模拟浏览器，实现[锤子便签网页版](http://note.t.tt)基本操作。
+利用 [Requests](http://python-requests.org) 、[requests_toolbelt](https://toolbelt.readthedocs.org) 等库模拟浏览器，实现[锤子便签网页版](http://note.t.tt)的基本操作。
 
 # 基本功能
 * 获取便签列表
