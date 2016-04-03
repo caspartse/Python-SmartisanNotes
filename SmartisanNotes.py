@@ -9,10 +9,10 @@ import simplejson as json
 from uuid import uuid4
 from base64 import b64encode
 from time import time, localtime, strftime
+import codecs
 import re
 import imghdr
 from requests_toolbelt import MultipartEncoder
-import codecs
 
 
 class SmartisanNotes(object):
@@ -260,8 +260,18 @@ class SmartisanNotes(object):
         self.checkResponse(response)
         content = json.loads(response.content)
         respData = content['data']
-        image = 'https://cloud.smartisan.com/apps/%.f/weiboimage/%s' % (time(), respData['image'])
+        imageName = respData['image']
+        image = 'https://cloud.smartisan.com/apps/%.f/weiboimage/%s' % (time(), imageName)
         respData.update({'image': image})
+        # Save Image
+        r = self.session.get(image, timeout=60, stream=True)
+        if r.status_code == 200:
+            with codecs.open(respData['image'], 'wb') as f:
+                for chunk in r.iter_content(10240):
+                    f.write(chunk)
+            f.close()
+        else:
+            pass
         # return dict
         return respData
 
@@ -336,4 +346,3 @@ class SmartisanNotes(object):
 
 if __name__ == '__main__':
     pass
-
