@@ -16,3 +16,14 @@ Python API Wrapper for http://note.t.tt Service.
 * 便签恢复（从 JSON 文件导入）
 
 # 使用示例
+
+## 1. 初始化及登录
+
+    import SmartisanNotes
+    username = 'Your Username'
+    password = 'Your Password'
+    s = SmartisanNotes(username, password)
+
+## 2. 获取便签列表
+
+    noteList = s.noteGetList()
