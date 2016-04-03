@@ -1,2 +1,3 @@
 # Python-SmartisanNotes
-Python API Wrapper for http://note.t.tt service.
+
+Python API Wrapper for http://note.t.tt Service.
