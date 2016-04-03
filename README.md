@@ -19,11 +19,20 @@ Python API Wrapper for http://note.t.tt Service.
 
 ## 1. 初始化及登录
 
-    import SmartisanNotes
+    from SmartisanNotes import *
     username = 'Your Username'
     password = 'Your Password'
     s = SmartisanNotes(username, password)
+    profile = s.accountProfile()
+    print profile
+
+    
 
 ## 2. 获取便签列表
 
     noteList = s.noteGetList()
+    print noteList
+
+## 3. 新建便签
+
+## 4. 修改便签
