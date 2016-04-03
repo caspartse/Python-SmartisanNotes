@@ -338,3 +338,4 @@ if __name__ == '__main__':
     username = 'Your Username'
     password = 'Your Password'
     s = SmartisanNotes(username, password)
+
