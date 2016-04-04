@@ -84,7 +84,9 @@ print note
 返回值：
 
 ```python
-{'note': {'markdown': 0, 'uid': 2387566, 'title': 'Hello, World!', 'favorite': 1, 'sync_id': '007w69yzo', 'pos': 125, 'detail': 'Hello, World!\nHello Kitty', 'modify_time': 1459745454411L, 'call_timestamp': 0, 'folderId': 0}}
+{'note': {'markdown': 0, 'uid': 2387566, 'title': 'Hello, World!', 'favorite': 1, \
+'sync_id': '007w69yzo', 'pos': 125, 'detail': 'Hello, World!\nHello Kitty', \
+'modify_time': 1459745454411L, 'call_timestamp': 0, 'folderId': 0}}
 ```
 
 ![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-02.jpg)
