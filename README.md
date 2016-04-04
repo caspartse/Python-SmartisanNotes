@@ -14,7 +14,7 @@ Python API Wrapper for http://note.t.tt Service.
 * 修改便签
 * 删除便签
 * 生成锤子便签分享图片
-* 生成锤子便签分享网页 （目前此功能官方暂停支持）
+* 生成锤子便签分享网页 （目前官方暂停支持此功能）
 
 
 ### 实验性功能
@@ -67,7 +67,7 @@ print noteList
 
 ```python
 # noteCreate(detail, [mkd='0', fav='0', note2Img='0'])
-# mkd='1' 开启 markdown 功能；fav='1' 添加为收藏；
+# mkd='1' 开启 Markdown 功能；fav='1' 添加为收藏；
 # note2Img='1' 生成分享图片（返回 URL），同时保存至本地
 text = 'Hello, World!\nHello Kitty'
 note = s.noteCreate(detail=text, fav='1')
@@ -83,7 +83,7 @@ print note
 
 返回值：
 
-```json
+```python
 {'note': {'markdown': 0, 'uid': 2387566, 'title': 'Hello, World!', 'favorite': 1, 'sync_id': '007w69yzo', 'pos': 125, 'detail': 'Hello, World!\nHello Kitty', 'modify_time': 1459745454411L, 'call_timestamp': 0, 'folderId': 0}}
 ```
 
