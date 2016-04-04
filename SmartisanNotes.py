@@ -266,7 +266,7 @@ class SmartisanNotes(object):
         # Save Image
         r = self.session.get(image, timeout=60, stream=True)
         if r.status_code == 200:
-            with codecs.open(respData['image'], 'wb') as f:
+            with codecs.open(imageName, 'wb') as f:
                 for chunk in r.iter_content(10240):
                     f.write(chunk)
             f.close()
