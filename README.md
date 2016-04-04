@@ -68,16 +68,8 @@ print noteList
 ```python
 # noteCreate(detail, [mkd='0', fav='0', note2Img='0'])
 # mkd='1' 开启 Markdown 功能；fav='1' 添加为收藏；
-# note2Img='1' 生成分享图片（返回 URL），同时保存至本地
 text = 'Hello, World!\nHello Kitty'
 note = s.noteCreate(detail=text, fav='1')
-```
-
-![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-01.jpg)
-
-```python
-text = '>Hello, World!\nHello Kitty'
-note = s.noteCreate(detail=text, mkd='1', note2Img='1')
 print note
 ```
 
@@ -87,6 +79,15 @@ print note
 {'note': {'markdown': 0, 'uid': 2387566, 'title': 'Hello, World!', 'favorite': 1, \
 'sync_id': '007w69yzo', 'pos': 125, 'detail': 'Hello, World!\nHello Kitty', \
 'modify_time': 1459745454411L, 'call_timestamp': 0, 'folderId': 0}}
+```
+
+![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-01.jpg)
+
+```python
+# note2Img='1' 生成分享图片（返回图片信息），同时保存至本地
+text = '>Hello, World!\nHello Kitty'
+note, image = s.noteCreate(detail=text, mkd='1', note2Img='1')
+print note, image
 ```
 
 ![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-02.jpg)
@@ -155,7 +156,7 @@ s.noteRestore('Notes.json)
 # 待完善功能
 
 * 便签备份及恢复，加入图片、音频等资源支持
-* 优化图片裁剪功能
+* 优化图片裁剪功能的操作逻辑
 
 # License
 
