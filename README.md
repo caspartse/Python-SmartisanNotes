@@ -149,7 +149,7 @@ s.noteBackup(fileName='Notes.json')
 ```python
 # noteRestore(fileName)
 # 从本地 JSON 文件导入便签数据，便签同步 ID 如果已存在，则更新便签信息；如果不存在，则新建便签。
-# 注：尚未知晓已删除便签包含的图片、音频文字在服务器的留存时间，故部分便签信息可能不完整。
+# 注：尚未知晓已删除便签包含的图片、音频资源在服务器的留存时间，故部分恢复的便签信息可能不完整。
 s.noteRestore('Notes.json)
 ```
 
