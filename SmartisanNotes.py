@@ -19,6 +19,8 @@ class SmartisanNotes(object):
     def __init__(self, username, password):
         super(SmartisanNotes, self).__init__()
         self.session = requests.Session()
+        # For Debug
+        #self.session.verify = False
         self.uid = str(self.accountLogin(username, password)['uid'])
         self.tabId = b64encode(uuid4().hex)[:8]
         self.markdown = str(self.noteGetList()['setting']['markdown'])
@@ -74,6 +76,15 @@ class SmartisanNotes(object):
     def accountProfile(self):
         url = 'https://cloud.smartisan.com/index.php?r=account/login'
         response = self.session.post(url, timeout=60)
+        self.checkResponse(response)
+        content = json.loads(response.content)
+        respData = content['data']
+        # return dict
+        return respData
+
+    def accountAgreet(self):
+        url = 'https://cloud.smartisan.com/apps/note/index.php?r=account/agree'
+        response = self.session.get(url, timeout=60)
         self.checkResponse(response)
         content = json.loads(response.content)
         respData = content['data']
@@ -196,7 +207,7 @@ class SmartisanNotes(object):
             yield chunk
 
     # Supported File Formats: jpeg, png ; Maximum File Size: 5MB
-    def imageUpload(self, imageFile, describe='', text='', mkd='0', fav='0', note2Img='0'):
+    def imageUploadOnly(self, imageFile):
         if re.match(r'[a-zA-z]+://[^\s]*', imageFile):
             # Upload Image from URL
             response = requests.Session().get(
@@ -227,15 +238,37 @@ class SmartisanNotes(object):
         self.checkResponse(response)
         content = json.loads(response.content)
         respData = content['data']
+        return respData
+
+    # Supported File Formats: jpeg, png ; Maximum File Size: 5MB
+    def imageUpload(self, imageFile, describe='', text='', reverse='0', mkd='0', fav='0', note2Img='0'):
+        respData = self.imageUploadOnly(imageFile)
         imageName = respData['file_name']
         width = respData['width']
         height = respData['height']
         # Length Limitations of Describe: ASCII 30, UTF-8 15
         describe = re.sub(r' |\t', '&nbsp;', describe.strip())
-        detail = '<image w=%s h=%s describe=%s name=%s>%s' % (width, height, describe, imageName, text)
+        if reverse == '1':
+            detail = '%s<image w=%s h=%s describe=%s name=%s>' % (text, width, height, describe, imageName)
+        else:
+            detail = '<image w=%s h=%s describe=%s name=%s>%s' % (width, height, describe, imageName, text)
         note = self.noteCreate(detail, mkd=mkd, fav=mkd, note2Img=note2Img)
         # return dicts
         return respData, note
+
+    # Inserting an Image Just Like Markdown: ![describe](imageFile)
+    def noteArticle(self, detail, mkd='0', fav='0', note2Img='0'):
+        while True:
+            imgElements = re.findall(r'\!\[[\s\S]*?\]\([^\s]+?\)', detail)
+            if len(imgElements) == 0:
+                break
+            describe, imageFile = re.findall(r'\!\[([\s\S]*?)\]\(([^\s]+?)\)', imgElements[0])[0]
+            image = self.imageUploadOnly(imageFile)
+            describe = re.sub(r' |\t', '&nbsp;', describe.strip())
+            imgTage = '<image w=%s h=%s describe=%s name=%s>' % (image['width'], image['height'], describe, image['file_name'])
+            detail = detail.replace(imgElements[0], imgTage)
+        note = self.noteCreate(detail=detail, mkd=mkd, fav=fav, note2Img='1')
+        return note
 
     # Unfinished Function
     def imageCrop(self, imageName, x, y, width, height):
@@ -267,7 +300,7 @@ class SmartisanNotes(object):
         r = self.session.get(image, timeout=60, stream=True)
         if r.status_code == 200:
             with codecs.open(imageName, 'wb') as f:
-                for chunk in r.iter_content(10240):
+                for chunk in r.iter_content(20480):
                     f.write(chunk)
             f.close()
         else:
