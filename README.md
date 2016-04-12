@@ -125,6 +125,7 @@ s.imageUpload(imageFile, describe=describe, text=text, reverse='1', note2Img='1'
 ![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-05.jpg)
 
 #### 3）新建长图文便签
+
 ```python
 # noteArticle(detail, [mkd='0', fav='0', note2Img='0'])
 # 支持 Markdown 语法式的图片插入：![describe](imageFile)
@@ -133,7 +134,7 @@ article = '''
 #生物股长（いきものがかり）
 ![生物股长（いきものがかり）](http://t.cn/Rqxv82C)
 生物股长，日本当红流行乐团，由吉冈圣恵、水野良树、山下穗尊三人组成于2002年2月1日。\
-所属事务所为 CUBE Group，所属唱片公司为EPIC Records（日本 SONY 唱片旗下厂牌）。\
+所属事务所为 CUBE Group，所属唱片公司为EPIC Records（日本 SONY 唱片旗下厂牌）。
 ![](album.jpg)
 '''
 s.noteArticle(detail=article, mkd='1', note2Img='1')
