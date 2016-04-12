@@ -95,7 +95,7 @@ print note, image
 #### 2）新建图文便签
 
 ```python
-# imageUpload(imageFile, [describe='', text='', mkd='0', fav='0', note2Img='0'])
+# imageUpload(imageFile, [describe='', text='', reverse='0', mkd='0', fav='0', note2Img='0'])
 # 支持上传本地图片及在线图片，支持 jpeg、png 格式，文件大小不超过 5 MB
 # describe 为图片描述，纯 ASCII 字符限 30 字，纯 UTF-8 字符限 15 字，超出将被忽略
 note = s.imageUpload('Octocat.jpg')
@@ -112,6 +112,34 @@ s.imageUpload(imageFile, describe=describe, text=text, mkd='1', note2Img='1')
 ```
 
 ![](http://7xslb5.com1.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-04.jpg)
+
+
+```python
+# reverse='1'，互换图文顺序
+imageFile = 'Tie_My_Boat.jpg'
+describe = 'Tie My Boat by Ray García'
+text = 'Ubuntu Wallpapers\n'
+s.imageUpload(imageFile, describe=describe, text=text, reverse='1', note2Img='1')
+```
+
+![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-05.jpg)
+
+#### 3）新建长图文便签
+```python
+# noteArticle(detail, [mkd='0', fav='0', note2Img='0'])
+# 支持 Markdown 语法式的图片插入：![describe](imageFile)
+# 支持上传本地图片及在线图片，支持 jpeg、png 格式，文件大小不超过 5 MB
+article = '''
+#生物股长（いきものがかり）
+![生物股长（いきものがかり）](http://t.cn/Rqxv82C)
+生物股长，日本当红流行乐团，由吉冈圣恵、水野良树、山下穗尊三人组成于2002年2月1日。\
+所属事务所为 CUBE Group，所属唱片公司为EPIC Records（日本 SONY 唱片旗下厂牌）。\
+![](album.jpg)
+'''
+s.noteArticle(detail=article, mkd='1', note2Img='1')
+```
+
+![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-06-small.jpg)
 
 ### 4. 修改便签
 
@@ -152,11 +180,21 @@ s.noteBackup(fileName='Notes.json')
 # 注：尚未知晓已删除便签包含的图片、音频资源在服务器的留存时间，故部分恢复的便签信息可能不完整。
 s.noteRestore('Notes.json)
 ```
+# 更新日志
 
-# 待完善功能
+### v0.2.0 (2016-04-12)
 
-* 便签备份及恢复，加入图片、音频等资源支持
-* 优化图片裁剪功能的操作逻辑
+* 优化 imageUpload() 方法，并新增 reverse 参数，用以交换文字和图片顺序；
+* 新增 article() 方法，支持 Markdown 语法式的图片插入，长图文排版更加灵活。
+
+### v0.1.0 (2016-04-04)
+
+* 项目初始化
+
+# Todo
+
+- [ ] 便签备份及恢复，加入图片、音频等资源支持
+- [ ] 优化图片裁剪功能的操作逻辑
 
 # License
 
