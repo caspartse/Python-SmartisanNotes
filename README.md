@@ -163,6 +163,10 @@ s.noteUpdateFav('007w69yzo', fav='0')
 # noteDelete(*syncIds)
 # 锤子便签网页版暂无回收站功能，请谨慎操作
 s.noteDelete('007w69yzo', '007w68yv7', '007w69p7m')
+
+# 删除所有便签！！！
+#syncIds = [note['sync_id'] for note in s.noteGetList()['list']]
+#s.noteDelete(*syncIds)
 ```
 
 ### 6. 便签备份（导出至 JSON 文件）
