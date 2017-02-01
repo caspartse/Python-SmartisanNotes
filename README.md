@@ -14,7 +14,6 @@ Python API Wrapper for http://note.t.tt Service.
 * 修改便签
 * 删除便签
 * 生成锤子便签分享图片
-* 生成锤子便签分享网页 （目前官方暂停支持此功能）
 
 
 ### 实验性功能
@@ -49,9 +48,6 @@ password = 'Your Password'
 # 创建新实例，同时完成登录
 s = SmartisanNotes(username, password)
 print s.uid
-# 查看账户信息
-profile = s.accountProfile()
-print profile
 ```
 
 ### 2. 获取便签列表
@@ -66,8 +62,9 @@ print noteList
 #### 1) 新建文本便签（支持部分 [Markdown](https://cloud.smartisan.com/apps/note/md.html) 语法）
 
 ```python
-# noteCreate(detail, [mkd='0', fav='0', note2Img='0'])
-# mkd='1' 开启 Markdown 功能；fav='1' 添加为收藏；
+# noteCreate(detail, [mode='2', fav='0', note2Img='0'])
+# formatting mode: 0 (Text) / 1 (Rich Text Format) / 2 (Markdown)
+# fav='1' 添加为收藏；
 text = 'Hello, World!\nHello Kitty'
 note = s.noteCreate(detail=text, fav='1')
 print note
@@ -76,9 +73,24 @@ print note
 返回值：
 
 ```python
-{'note': {'markdown': 0, 'uid': 2387566, 'title': 'Hello, World!', 'favorite': 1, \
-'sync_id': '007w69yzo', 'pos': 125, 'detail': 'Hello, World!\nHello Kitty', \
-'modify_time': 1459745454411L, 'call_timestamp': 0, 'folderId': 0}}
+{
+   'note':{
+      'markdown':0,
+      'uid':2387566,
+      'title':'Hello, World!',
+      'sync_id':'007wa313j',
+      'detail':'Hello, World!\nHello Kitty',
+      'favorite':1,
+      'pos':15,
+      'eseqid':826802164717322241,
+      'seqid':826802164650213377,
+      'modify_time':1485960035468,
+      'call_timestamp':0,
+      'tab_id':'NmIzN2Jl',
+      'formatting_mode':2,
+      'folderId':0
+   }
+}
 ```
 
 ![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-01.jpg)
@@ -87,7 +99,17 @@ print note
 # note2Img='1' 生成分享图片（返回图片信息），同时保存至本地
 text = '>Hello, World!\nHello Kitty'
 note, image = s.noteCreate(detail=text, mkd='1', note2Img='1')
-print note, image
+print image
+```
+
+返回值：
+
+```python
+{
+   'width':660,
+   'image':'https://cloud.smartisan.com/apps/1485961181/weiboimage/pN55RRxdZdphJJdRNllhtNF9Fx5B5FZVZVRJV9pN95xtxddF.jpg',
+   'height':359
+}
 ```
 
 ![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-02.jpg)
@@ -95,7 +117,7 @@ print note, image
 #### 2）新建图文便签
 
 ```python
-# imageUpload(imageFile, [describe='', text='', reverse='0', mkd='0', fav='0', note2Img='0'])
+# imageUpload(imageFile, [describe='', text='', reverse='0', mode='2', fav='0', note2Img='0'])
 # 支持上传本地图片及在线图片，支持 jpeg、png 格式，文件大小不超过 5 MB
 # describe 为图片描述，纯 ASCII 字符限 30 字，纯 UTF-8 字符限 15 字，超出将被忽略
 note = s.imageUpload('Octocat.jpg')
@@ -108,7 +130,7 @@ imageFile = 'http://image.wufazhuce.com/Fh7OzcpPtSnfC4s60p07sEdvjIzg'
 describe = '基因乐趣&人畺 作品'
 text = '没人可以永远的活在青春里，但还好，如若有心，我们能见证一代又一代的年轻。\
 这种见证，也便成了一种参与。 by 自由极光\n\n[「ONE · 一个」 VOL.1161]'
-s.imageUpload(imageFile, describe=describe, text=text, mkd='1', note2Img='1')
+s.imageUpload(imageFile, describe=describe, text=text, note2Img='1')
 ```
 
 ![](http://7xslb5.com1.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-04.jpg)
@@ -127,7 +149,7 @@ s.imageUpload(imageFile, describe=describe, text=text, reverse='1', note2Img='1'
 #### 3）新建长图文便签
 
 ```python
-# noteArticle(detail, [mkd='0', fav='0', note2Img='0'])
+# noteArticle(detail, [mode='2', fav='0', note2Img='0'])
 # 支持 Markdown 语法式的图片插入：![describe](imageFile)
 # 支持上传本地图片及在线图片，支持 jpeg、png 格式，文件大小不超过 5 MB
 article = '''
@@ -137,7 +159,7 @@ article = '''
 所属事务所为 CUBE Group，所属唱片公司为EPIC Records（日本 SONY 唱片旗下厂牌）。
 ![](album.jpg)
 '''
-s.noteArticle(detail=article, mkd='1', note2Img='1')
+s.noteArticle(detail=article, note2Img='1')
 ```
 
 ![](http://7xslb5.com2.z0.glb.clouddn.com/Python-SmartisanNotes-Demo-06-small.jpg)
@@ -145,14 +167,14 @@ s.noteArticle(detail=article, mkd='1', note2Img='1')
 ### 4. 修改便签
 
 ```python
-# noteUpdate(syncId, detail, [mkd='0', fav='0', note2Img='0'])
+# noteUpdate(syncId, detail, [mode='2', fav='0', note2Img='0'])
 # syncId 为同步 ID，也是便签唯一的标识
 text = 'Hello Kitty\nHello Hello Hello Kitty'
 s.noteUpdate('007w69yzo', detail=text)
-# noteUpdateMarkdown(syncId, [mkd='1', note2Img='0'])
-# 仅修改 Markdown 属性
-s.noteUpdateMarkdown('007w69yzo', mkd='1')
-# noteUpdateFav(syncId, [fav='1', note2Img='0'])
+# noteUpdateFormattingMode(syncId, mode)
+# 仅修改 formatting mode: 0 (Text) / 1 (Rich Text Format) / 2 (Markdown)
+s.noteUpdateMarkdown('007w69yzo', mode='2')
+# noteUpdateFav(syncId, [fav='1'])
 # 仅修改 favorite 属性
 s.noteUpdateFav('007w69yzo', fav='0')
 ```
@@ -161,7 +183,7 @@ s.noteUpdateFav('007w69yzo', fav='0')
 
 ```python
 # noteDelete(*syncIds)
-# 锤子便签网页版暂无回收站功能，请谨慎操作
+# 永久性删除，请谨慎操作
 s.noteDelete('007w69yzo', '007w68yv7', '007w69p7m')
 
 # 删除所有便签！！！
@@ -187,6 +209,10 @@ s.noteRestore('Notes.json)
 ```
 # 更新日志
 
+### v0.3.0 (2017-02-01)
+
+* 官方版本升级，部分接口调整
+
 ### v0.2.0 (2016-04-12)
 
 * 优化 imageUpload() 方法，并新增 reverse 参数，用以交换文字和图片顺序；
@@ -198,8 +224,11 @@ s.noteRestore('Notes.json)
 
 # Todo
 
-- [ ] 便签备份及恢复，加入图片、音频等资源支持
-- [ ] 优化图片裁剪功能的操作逻辑
+- [ ] 增加文件夹功能支持
+- [ ] 增加回收站操作支持
+- [ ] 增加富文本格式支持
+- [ ] 优化便签备份恢复
+- [ ] 优化图片裁剪操作
 
 # License
 
